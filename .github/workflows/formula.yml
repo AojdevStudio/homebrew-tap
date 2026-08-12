@@ -15,8 +15,13 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+      - name: Register checkout as tap
+        run: |
+          tap_path="$(brew --repository AojdevStudio/tap)"
+          mkdir -p "$(dirname "$tap_path")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_path"
       - run: brew style Formula/claudex.rb
-      - run: brew audit --strict --online --formula Formula/claudex.rb
-      - run: brew install --formula Formula/claudex.rb
-      - run: brew test claudex
+      - run: brew audit --strict --online --formula AojdevStudio/tap/claudex
+      - run: brew install AojdevStudio/tap/claudex
+      - run: brew test AojdevStudio/tap/claudex
       - run: brew uninstall claudex
