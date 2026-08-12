@@ -1,0 +1,27 @@
+name: Formula CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Register checkout as tap
+        run: |
+          tap_path="$(brew --repository AojdevStudio/tap)"
+          mkdir -p "$(dirname "$tap_path")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_path"
+      - run: brew style Formula/claudex.rb
+      - run: brew audit --strict --online --formula AojdevStudio/tap/claudex
+      - run: brew install AojdevStudio/tap/claudex
+      - run: brew test AojdevStudio/tap/claudex
+      - run: brew uninstall claudex
