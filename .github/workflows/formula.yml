@@ -9,19 +9,58 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: macos-14
+  platform-tests:
+    name: Test ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS ARM64
+            runner: macos-14
+          - platform: Linux ARM64
+            runner: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Register checkout as tap
+        if: runner.os == 'macOS'
         run: |
           tap_path="$(brew --repository AojdevStudio/tap)"
           mkdir -p "$(dirname "$tap_path")"
           ln -s "$GITHUB_WORKSPACE" "$tap_path"
-      - run: brew style Formula/claudex.rb
-      - run: brew audit --strict --online --formula AojdevStudio/tap/claudex
-      - run: brew install AojdevStudio/tap/claudex
-      - run: brew test AojdevStudio/tap/claudex
-      - run: brew uninstall claudex
+      - name: Verify formula on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew style Formula/claudex.rb
+          brew audit --strict --online --formula AojdevStudio/tap/claudex
+          brew install AojdevStudio/tap/claudex
+          brew test AojdevStudio/tap/claudex
+          brew uninstall claudex
+      - name: Verify formula on Linux ARM64
+        if: runner.os == 'Linux'
+        run: |
+          docker run --rm --platform linux/arm64 \
+            --volume "$GITHUB_WORKSPACE:/tmp/homebrew-tap:ro" \
+            homebrew/brew:latest bash -lc '
+              tap_path="$(brew --repository AojdevStudio/tap)"
+              mkdir -p "$(dirname "$tap_path")"
+              ln -s /tmp/homebrew-tap "$tap_path"
+              brew style Formula/claudex.rb
+              brew audit --strict --online --formula AojdevStudio/tap/claudex
+              brew install AojdevStudio/tap/claudex
+              brew test AojdevStudio/tap/claudex
+              claudex --version
+            '
+
+  test:
+    name: test
+    if: ${{ always() }}
+    needs: platform-tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every platform test
+        env:
+          PLATFORM_RESULT: ${{ needs.platform-tests.result }}
+        run: test "$PLATFORM_RESULT" = success

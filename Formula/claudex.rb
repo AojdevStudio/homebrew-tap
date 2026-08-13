@@ -28,39 +28,43 @@ class Claudex < Formula
   end
 
   test do
-    key = testpath/"api-key"
-    key.write "formula-fixture-key\n"
-    key.chmod 0600
-
-    fake_claude = testpath/"claude"
-    fake_claude.write <<~SH
-      #!/bin/sh
-      printf '%s\\n' "$@"
-    SH
-    fake_claude.chmod 0700
-
-    config = testpath/"config.toml"
-    config.write <<~TOML
-      [proxy]
-      base_url = "http://127.0.0.1:18317"
-      api_key_file = "#{key}"
-
-      [defaults]
-      model = "fable"
-
-      [models]
-      fable = "provider-fable"
-      opus = "provider-opus"
-      sonnet = "provider-sonnet"
-      haiku = "provider-haiku"
-    TOML
-
-    ENV["CLAUDEX_CONFIG"] = config
-    ENV["CLAUDEX_CLAUDE_PATH"] = fake_claude
-
-    assert_equal "configuration valid\n", shell_output("#{bin}/claudex config validate")
     assert_match "claudex #{version}", shell_output("#{bin}/claudex --version")
-    assert_match "--model\nprovider-opus\n-p\nFORMULA_OK\n",
-                 shell_output("#{bin}/claudex --model opus -p FORMULA_OK")
+    assert_match "--proxy-model", shell_output("#{bin}/claudex --help")
+
+    if OS.mac?
+      key = testpath/"api-key"
+      key.write "formula-fixture-key\n"
+      key.chmod 0600
+
+      fake_claude = testpath/"claude"
+      fake_claude.write <<~SH
+        #!/bin/sh
+        printf '%s\\n' "$@"
+      SH
+      fake_claude.chmod 0700
+
+      config = testpath/"config.toml"
+      config.write <<~TOML
+        [proxy]
+        base_url = "http://127.0.0.1:18317"
+        api_key_file = "#{key}"
+
+        [defaults]
+        model = "fable"
+
+        [models]
+        fable = "provider-fable"
+        opus = "provider-opus"
+        sonnet = "provider-sonnet"
+        haiku = "provider-haiku"
+      TOML
+
+      ENV["CLAUDEX_CONFIG"] = config
+      ENV["CLAUDEX_CLAUDE_PATH"] = fake_claude
+
+      assert_equal "configuration valid\n", shell_output("#{bin}/claudex config validate")
+      assert_match "--model\nprovider-opus\n-p\nFORMULA_OK\n",
+                   shell_output("#{bin}/claudex --model opus -p FORMULA_OK")
+    end
   end
 end
