@@ -1,12 +1,26 @@
 class Claudex < Formula
   desc "Launch Claude Code through an OpenAI-compatible model gateway"
   homepage "https://github.com/AojdevStudio/claudex"
-  url "https://github.com/AojdevStudio/claudex/releases/download/v0.1.0/claudex-v0.1.0-aarch64-apple-darwin.tar.xz"
-  sha256 "37ae3c4680f83416f678a5a3b55bdc4ee79839acf81bfe5cfe32a4e4225246cc"
   license "MIT"
 
-  depends_on arch: :arm64
-  depends_on :macos
+  on_macos do
+    on_arm do
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-aarch64-apple-darwin.tar.xz"
+      sha256 "46deb59d1ff49467273667a7677105ba13b15517ae01b512787ddb58477b2db0"
+    end
+  end
+
+  on_linux do
+    on_arm do
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-aarch64-unknown-linux-musl.tar.xz"
+      sha256 "2f0d05cdc2729b4cc61ccb0022c41d8bd3faf31d6cdb9377407ea822752c25d5"
+    end
+
+    on_intel do
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "ab485e40100e32990ff6fada6e824c4a346bb7782d6fdb0df11a1c18dd5f82df"
+    end
+  end
 
   def install
     bin.install "claudex"
