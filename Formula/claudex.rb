@@ -5,20 +5,20 @@ class Claudex < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-aarch64-apple-darwin.tar.xz"
-      sha256 "46deb59d1ff49467273667a7677105ba13b15517ae01b512787ddb58477b2db0"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-aarch64-apple-darwin.tar.xz"
+      sha256 "58f7c656ce131eb7c741bf0aca37c1329bb9bc408178e5ca54ceb753f4a09c1c"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-aarch64-unknown-linux-musl.tar.xz"
-      sha256 "2f0d05cdc2729b4cc61ccb0022c41d8bd3faf31d6cdb9377407ea822752c25d5"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-aarch64-unknown-linux-musl.tar.xz"
+      sha256 "d205679e71697fd4671911138326537d25cdf286a2036c75f93c5ae6f8e07e4f"
     end
 
     on_intel do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.0/claudex-v0.2.0-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "ab485e40100e32990ff6fada6e824c4a346bb7782d6fdb0df11a1c18dd5f82df"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "d9797eab5713be219dedcaad0d781fe3d5287f1cf1f7a7528e79a95cbe3a0308"
     end
   end
 
