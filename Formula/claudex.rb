@@ -5,20 +5,20 @@ class Claudex < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-aarch64-apple-darwin.tar.xz"
-      sha256 "58f7c656ce131eb7c741bf0aca37c1329bb9bc408178e5ca54ceb753f4a09c1c"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.3.0/claudex-v0.3.0-aarch64-apple-darwin.tar.xz"
+      sha256 "305be5d1ae61d88269f84c0b45d6e81addbc51b66ea0d3c4768e11528be30beb"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-aarch64-unknown-linux-musl.tar.xz"
-      sha256 "d205679e71697fd4671911138326537d25cdf286a2036c75f93c5ae6f8e07e4f"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.3.0/claudex-v0.3.0-aarch64-unknown-linux-musl.tar.xz"
+      sha256 "20f955732ea109593063e1882b07388cbb1061c5b57ed6c67829864f66b5165d"
     end
 
     on_intel do
-      url "https://github.com/AojdevStudio/claudex/releases/download/v0.2.1/claudex-v0.2.1-x86_64-unknown-linux-musl.tar.xz"
-      sha256 "d9797eab5713be219dedcaad0d781fe3d5287f1cf1f7a7528e79a95cbe3a0308"
+      url "https://github.com/AojdevStudio/claudex/releases/download/v0.3.0/claudex-v0.3.0-x86_64-unknown-linux-musl.tar.xz"
+      sha256 "fc9c4bcb7148e53b193c0985b0c701ded1412fc3a446e506370e7d0b370a1513"
     end
   end
 
@@ -57,6 +57,12 @@ class Claudex < Formula
         opus = "provider-opus"
         sonnet = "provider-sonnet"
         haiku = "provider-haiku"
+
+        [context_windows]
+        "provider-fable" = 200000
+        "provider-opus" = 200000
+        "provider-sonnet" = 200000
+        "provider-haiku" = 200000
       TOML
 
       ENV["CLAUDEX_CONFIG"] = config
